@@ -1,0 +1,7 @@
+/media/
+/images/
+/videos/
+*.mp4
+*.gif
+*.svg
+/media_dir.txt
