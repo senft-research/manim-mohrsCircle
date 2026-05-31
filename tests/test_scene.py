@@ -29,3 +29,5 @@ class TestScene(MovingCameraScene):
         self.play(Create(mc.line))
         self.play(Create(mc.circle), run_time=2)
         self.wait(1)
+        self.play(FadeIn(mc.max_stress_dot), run_time=2)
+        self.play(FadeIn(mc.min_stress_dot), run_time=2)

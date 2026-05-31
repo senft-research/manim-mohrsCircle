@@ -36,27 +36,28 @@ class MohrCircle(VGroup):
             self.stress_y,
             self.stress_shear
         )
+        self._init_key_geometry()
+        self._find_principle_stresses()
 
 
     def _create_objects(self):
-        self._create_initial_points()
+        self._create_initial_dots()
         self.line = Line(self.point_1_dot.get_center(), self.point_2_dot.get_center(), color=BLUE)
         self._create_labels()
         self._create_circle()
 
-    def _create_initial_points(self):
+    def _create_initial_dots(self):
         self.point_1_dot = Dot(point=self.axes.c2p(self.circle_points.point_1), color=CYAN)
         self.point_2_dot = Dot(point=self.axes.c2p(self.circle_points.point_2), color=CYAN)
         self.center_point_dot = Dot(point=self.axes.c2p(self.circle_points.center_point), color=RED)
+        self.min_stress_dot = Dot(point=self.axes.c2p(np.array([self.min_stress_x, 0, 0])), color=CYAN)
+        self.max_stress_dot = Dot(point=self.axes.c2p(np.array([self.max_stress_x, 0, 0])), color=CYAN)
 
     def _create_labels(self):
         self.label_1 = MathTex(f"({self.stress_x}, {-self.stress_shear})").next_to(self.point_1_dot, UP)
         self.label_2 = MathTex(f"({self.stress_y}, {self.stress_shear})").next_to(self.point_2_dot, DOWN)
 
     def _create_circle(self):
-
-
-        self._init_key_geometry()
 
         self.circle = ParametricFunction(
             lambda t: self.axes.c2p(self._create_circle_points(t)
@@ -104,3 +105,9 @@ class MohrCircle(VGroup):
             p1[1] - center[1],
             p1[0] - center[0]
         ))
+
+    def _find_principle_stresses(self):
+        center_x = self.circle_points.center_point[0]
+        self.min_stress_x = center_x - self.circle_radius
+        self.max_stress_x = center_x + self.circle_radius
+
