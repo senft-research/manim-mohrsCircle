@@ -1,5 +1,5 @@
 import numpy as np
-from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, UP, DOWN, Line, ParametricFunction, TAU
+from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, UP, DOWN, Line, ParametricFunction, TAU, WHITE
 from manim.utils.color.DVIPSNAMES import CYAN
 
 ## TODO Need to add better label formatting, maybe do some sort of rotating line / protractor animation when creating
@@ -119,12 +119,10 @@ class MohrCircle(VGroup):
         self.min_shear_y = center_y - self.circle_radius
         self.max_shear_y = center_y + self.circle_radius
 
-    ## TODO logic is not quite right here, as the angle needs to start from the line of mohr's circle.
     def find_stress_point_at_element_rotation_rads(self, rot_angle_rads):
-
         stress_point = self.circle.point_at_angle(rot_angle_rads*2)
-        return Dot(point=stress_point, color=RED)
+        return Dot(point=stress_point, color=WHITE)
 
     def find_stress_point_at_element_rotation_degrees(self, rot_angle_degrees):
-        rot_angle_rads = rot_angle_degrees*np.pi/180
-        return self.find_stress_point_at_element_rotation_rads(rot_angle_rads)
+
+        return self.find_stress_point_at_element_rotation_rads(rot_angle_degrees*(np.pi/180))
