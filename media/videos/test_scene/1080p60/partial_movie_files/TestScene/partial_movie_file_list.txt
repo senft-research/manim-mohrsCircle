@@ -1,6 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:/home/jordan/Projects/manim-mohrsCircle/media/videos/test_scene/1080p60/partial_movie_files/TestScene/289990783_3778782379_2189899367.mp4'
-file 'file:/home/jordan/Projects/manim-mohrsCircle/media/videos/test_scene/1080p60/partial_movie_files/TestScene/243028782_2230675760_2696148551.mp4'
-file 'file:/home/jordan/Projects/manim-mohrsCircle/media/videos/test_scene/1080p60/partial_movie_files/TestScene/243028782_4006720983_280164987.mp4'
-file 'file:/home/jordan/Projects/manim-mohrsCircle/media/videos/test_scene/1080p60/partial_movie_files/TestScene/243028782_393755081_991713289.mp4'
-file 'file:/home/jordan/Projects/manim-mohrsCircle/media/videos/test_scene/1080p60/partial_movie_files/TestScene/243028782_548731573_1083659416.mp4'
