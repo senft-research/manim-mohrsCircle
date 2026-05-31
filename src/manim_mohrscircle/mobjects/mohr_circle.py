@@ -1,10 +1,9 @@
 import numpy as np
-from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, UP, DOWN, Line, ParametricFunction, TAU
+from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, UP, DOWN, Line, ParametricFunction, TAU, WHITE
 from manim.utils.color.DVIPSNAMES import CYAN
 
 ## TODO Need to add better label formatting, maybe do some sort of rotating line / protractor animation when creating
-##      the circle, add way to show the principle stresses / max & min shear stresses, and how to show stresses at specific
-##      angle.
+##      the circle and how to show stresses at specific angles.
 class Points:
     def __init__(self, p1, p2):
         self.point_1 = p1
@@ -61,17 +60,12 @@ class MohrCircle(VGroup):
         self.label_2 = MathTex(f"({self.stress_y}, {self.stress_shear})").next_to(self.point_2_dot, DOWN)
 
     def _create_circle(self):
-
-        self.circle = ParametricFunction(
-            lambda t: self.axes.c2p(self._create_circle_points(t)
-            ),
-            t_range=[0, TAU],
-            color=RED,
-        )
-
+        self.circle = Circle(radius=(float(self.scene_circle_radius)))
+        self.circle.move_to(self.center_point_dot.get_center())
         self._rotate_circle()
 
     def _add_mobjects(self):
+        self.add(self.axes)
         self.add(self.circle)
         self.add(self.point_1_dot, self.point_2_dot)
         self.add(self.label_1, self.label_2)
@@ -92,6 +86,12 @@ class MohrCircle(VGroup):
         self.circle_radius = np.linalg.norm(
             self.circle_points.point_1 - self.circle_points.point_2
         ) / 2
+
+        self.scene_center_point = self.axes.c2p(*self.circle_points.center_point)
+
+        p1_scene = self.axes.c2p(*self.circle_points.point_1)
+        p2_scene = self.axes.c2p(*self.circle_points.point_2)
+        self.scene_circle_radius = np.linalg.norm(p1_scene - p2_scene) / 2
 
     def _create_circle_points(self,t):
         return (self.center_point[0] + self.circle_radius * np.cos(t),
@@ -119,3 +119,10 @@ class MohrCircle(VGroup):
         self.min_shear_y = center_y - self.circle_radius
         self.max_shear_y = center_y + self.circle_radius
 
+    def find_stress_point_at_element_rotation_rads(self, rot_angle_rads):
+        stress_point = self.circle.point_at_angle(rot_angle_rads*2)
+        return Dot(point=stress_point, color=WHITE)
+
+    def find_stress_point_at_element_rotation_degrees(self, rot_angle_degrees):
+
+        return self.find_stress_point_at_element_rotation_rads(rot_angle_degrees*(np.pi/180))
