@@ -31,3 +31,5 @@ class TestScene(MovingCameraScene):
         self.wait(1)
         self.play(FadeIn(mc.max_stress_dot), run_time=2)
         self.play(FadeIn(mc.min_stress_dot), run_time=2)
+        self.play(FadeIn(mc.max_shear_dot), run_time=2)
+        self.play(FadeIn(mc.min_shear_dot), run_time=2)

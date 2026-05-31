@@ -38,6 +38,7 @@ class MohrCircle(VGroup):
         )
         self._init_key_geometry()
         self._find_principle_stresses()
+        self._find_shear_stress_boundaries()
 
 
     def _create_objects(self):
@@ -52,6 +53,8 @@ class MohrCircle(VGroup):
         self.center_point_dot = Dot(point=self.axes.c2p(self.circle_points.center_point), color=RED)
         self.min_stress_dot = Dot(point=self.axes.c2p(np.array([self.min_stress_x, 0, 0])), color=CYAN)
         self.max_stress_dot = Dot(point=self.axes.c2p(np.array([self.max_stress_x, 0, 0])), color=CYAN)
+        self.min_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.min_shear_y, 0])), color=CYAN)
+        self.max_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.max_shear_y, 0])), color=CYAN)
 
     def _create_labels(self):
         self.label_1 = MathTex(f"({self.stress_x}, {-self.stress_shear})").next_to(self.point_1_dot, UP)
@@ -110,4 +113,9 @@ class MohrCircle(VGroup):
         center_x = self.circle_points.center_point[0]
         self.min_stress_x = center_x - self.circle_radius
         self.max_stress_x = center_x + self.circle_radius
+
+    def _find_shear_stress_boundaries(self):
+        center_y = self.circle_points.center_point[1]
+        self.min_shear_y = center_y - self.circle_radius
+        self.max_shear_y = center_y + self.circle_radius
 
