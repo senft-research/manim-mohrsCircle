@@ -18,8 +18,9 @@ class TestScene(MovingCameraScene):
         self.add(mc.axes)
         self.camera.frame.move_to(mc.circle.get_center())
         self.play(
-            FadeIn(mc.point_1),
-            FadeIn(mc.point_2),
+            FadeIn(mc.point_1_dot),
+            FadeIn(mc.point_2_dot),
+            FadeIn(mc.center_point_dot),
             FadeIn(mc.label_1),
             FadeIn(mc.label_2),
             lag_ratio=0.3
