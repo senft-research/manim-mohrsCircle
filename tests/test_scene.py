@@ -33,3 +33,4 @@ class TestScene(MovingCameraScene):
         self.play(FadeIn(mc.min_stress_dot), run_time=2)
         self.play(FadeIn(mc.max_shear_dot), run_time=2)
         self.play(FadeIn(mc.min_shear_dot), run_time=2)
+        self.play(FadeIn(mc.find_stress_point_at_element_rotation_degrees(45)), run_time=2)
