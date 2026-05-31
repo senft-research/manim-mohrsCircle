@@ -2,7 +2,9 @@ import numpy as np
 from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, UP, DOWN, Line, ParametricFunction, TAU
 from manim.utils.color.DVIPSNAMES import CYAN
 
-
+## TODO Need to add better label formatting, maybe do some sort of rotating line / protractor animation when creating
+##      the circle, add way to show the principle stresses / max & min shear stresses, and how to show stresses at specific
+##      angle.
 class Points:
     def __init__(self, p1, p2):
         self.point_1 = p1
