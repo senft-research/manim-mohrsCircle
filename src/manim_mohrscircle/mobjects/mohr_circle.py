@@ -55,6 +55,7 @@ class MohrCircle(VGroup):
         self.min_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.min_shear_y, 0])), color=CYAN)
         self.max_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.max_shear_y, 0])), color=CYAN)
 
+    ## TODO the labels need to be put in a better spot in a way that's dynamic (never gets in the way of the circle)
     def _create_labels(self):
         self.label_1 = MathTex(f"({self.stress_x}, {-self.stress_shear})").next_to(self.point_1_dot, UP)
         self.label_2 = MathTex(f"({self.stress_y}, {self.stress_shear})").next_to(self.point_2_dot, DOWN)
