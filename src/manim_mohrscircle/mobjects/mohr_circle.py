@@ -1,5 +1,5 @@
 import numpy as np
-from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, UP, DOWN, Line, ParametricFunction, TAU, WHITE
+from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, Line, WHITE, RIGHT
 from manim.utils.color.DVIPSNAMES import CYAN
 
 ## TODO Need to add better label formatting, code cleanup (maybe separate classes for different functionality?) and add
@@ -57,8 +57,8 @@ class MohrCircle(VGroup):
 
     ## TODO the labels need to be put in a better spot in a way that's dynamic (never gets in the way of the circle)
     def _create_labels(self):
-        self.label_1 = MathTex(f"({self.stress_x}, {-self.stress_shear})").next_to(self.point_1_dot, UP)
-        self.label_2 = MathTex(f"({self.stress_y}, {self.stress_shear})").next_to(self.point_2_dot, DOWN)
+        self.label_1 = MathTex(f"({self.stress_x}, {-self.stress_shear})", font_size= 30).next_to(self.point_1_dot, RIGHT)
+        self.label_2 = MathTex(f"({self.stress_y}, {self.stress_shear})", font_size= 30).next_to(self.point_2_dot, RIGHT)
 
     def _create_circle(self):
         self.circle = Circle(radius=(float(self.scene_circle_radius)))
