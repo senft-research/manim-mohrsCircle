@@ -39,19 +39,11 @@ class MohrCircle(VGroup):
     def _create_initial_dots(self):
         self.point_1_dot = MohrCirclePoint(self.circle_points.point_1[0], self.circle_points.point_1[1], self.axes, self.point_label_kwargs)
         self.point_2_dot = MohrCirclePoint(self.circle_points.point_2[0], self.circle_points.point_2[1], self.axes, self.point_label_kwargs)
-        #self.center_point_dot = Dot(point=self.axes.c2p(self.circle_points.center_point), color=RED)
         self.center_point_dot = MohrCirclePoint(self.circle_points.center_point[0], self.circle_points.center_point[1], self.axes, self.point_label_kwargs)
 
-        #self.min_stress_dot = Dot(point=self.axes.c2p(np.array([self.min_stress_x, 0, 0])), color=CYAN)
         self.min_stress_dot = MohrCirclePoint(self.min_stress_x, 0, self.axes, self.point_label_kwargs)
-
-        #self.max_stress_dot = Dot(point=self.axes.c2p(np.array([self.max_stress_x, 0, 0])), color=CYAN)
         self.max_stress_dot = MohrCirclePoint(self.max_stress_x, 0, self.axes, self.point_label_kwargs)
-
-        #self.min_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.min_shear_y, 0])), color=CYAN)
         self.min_shear_dot = MohrCirclePoint(self.center_point[0], self.min_shear_y, self.axes, self.point_label_kwargs)
-
-        #self.max_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.max_shear_y, 0])), color=CYAN)
         self.max_shear_dot = MohrCirclePoint(self.center_point[0], self.max_shear_y, self.axes, self.point_label_kwargs)
 
     def _create_circle(self):
