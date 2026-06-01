@@ -21,8 +21,6 @@ class TestScene(MovingCameraScene):
             FadeIn(mc.point_1_dot),
             FadeIn(mc.point_2_dot),
             FadeIn(mc.center_point_dot),
-            FadeIn(mc.label_1),
-            FadeIn(mc.label_2),
             lag_ratio=0.3
         )
         self.wait(2)

@@ -1,5 +1,7 @@
+from typing import Iterable
+
 import numpy as np
-from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, Line, WHITE, RIGHT
+from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, Line, WHITE, RIGHT, VMobject
 from manim.utils.color.DVIPSNAMES import CYAN
 
 ## TODO Need to add better label formatting, code cleanup (maybe separate classes for different functionality?) and add
@@ -9,6 +11,16 @@ class Points:
         self.point_1 = p1
         self.point_2 = p2
         self.center_point = (p1 + p2) / 2
+
+class MohrCirclePoint(VGroup):
+    def __init__(self, stress_x, stress_y, axes, *vmobjects: VMobject | Iterable[VMobject], **kwargs):
+        super().__init__(*vmobjects, **kwargs)
+        dot = Dot(point=axes.c2p([stress_x, stress_y]), color=CYAN)
+        label = MathTex(f"({stress_x}, {stress_y})", font_size= 30).next_to(dot, RIGHT)
+        self.point_center = dot.get_center()
+        self.add(dot)
+        self.add(label)
+
 
 
 def init_points(stress_x, stress_y, stress_shear):
@@ -42,23 +54,18 @@ class MohrCircle(VGroup):
 
     def _create_objects(self):
         self._create_initial_dots()
-        self.line = Line(self.point_1_dot.get_center(), self.point_2_dot.get_center(), color=BLUE)
-        self._create_labels()
+        self.line = Line(self.point_1_dot.point_center, self.point_2_dot.point_center, color=BLUE)
         self._create_circle()
 
     def _create_initial_dots(self):
-        self.point_1_dot = Dot(point=self.axes.c2p(self.circle_points.point_1), color=CYAN)
-        self.point_2_dot = Dot(point=self.axes.c2p(self.circle_points.point_2), color=CYAN)
+        self.point_1_dot = MohrCirclePoint(self.circle_points.point_1[0], self.circle_points.point_1[1], self.axes)
+        self.point_2_dot = MohrCirclePoint(self.circle_points.point_2[0], self.circle_points.point_2[1], self.axes)
         self.center_point_dot = Dot(point=self.axes.c2p(self.circle_points.center_point), color=RED)
         self.min_stress_dot = Dot(point=self.axes.c2p(np.array([self.min_stress_x, 0, 0])), color=CYAN)
         self.max_stress_dot = Dot(point=self.axes.c2p(np.array([self.max_stress_x, 0, 0])), color=CYAN)
         self.min_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.min_shear_y, 0])), color=CYAN)
         self.max_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.max_shear_y, 0])), color=CYAN)
 
-    ## TODO the labels need to be put in a better spot in a way that's dynamic (never gets in the way of the circle)
-    def _create_labels(self):
-        self.label_1 = MathTex(f"({self.stress_x}, {-self.stress_shear})", font_size= 30).next_to(self.point_1_dot, RIGHT)
-        self.label_2 = MathTex(f"({self.stress_y}, {self.stress_shear})", font_size= 30).next_to(self.point_2_dot, RIGHT)
 
     def _create_circle(self):
         self.circle = Circle(radius=(float(self.scene_circle_radius)))
@@ -69,7 +76,6 @@ class MohrCircle(VGroup):
         self.add(self.axes)
         self.add(self.circle)
         self.add(self.point_1_dot, self.point_2_dot)
-        self.add(self.label_1, self.label_2)
         self.add(self.line)
         self.add(self.center_point_dot)
 
@@ -79,8 +85,6 @@ class MohrCircle(VGroup):
         self.point_1_dot.set_z_index(2)
         self.point_2_dot.set_z_index(2)
         self.center_point_dot.set_z_index(2)
-        self.label_1.set_z_index(3)
-        self.label_2.set_z_index(3)
 
     def _init_key_geometry(self):
         self.center_point = self.circle_points.center_point
