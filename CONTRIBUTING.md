@@ -6,6 +6,8 @@ If you would like to contribute to the project, I would ask that you follow the 
 
 - Please make an Issue regarding the change / addition you wish to make, and then refer to that issue in your PR.
 - Each PR should be focused and address only one feature / bugfix at a time. Large / Unrelated changes may be asked to be split into several PRs / issues.
+- All PRs should be branched off from the development (dev) branch, and merged back into dev. I am the only one who will merge into master.
+- PRs should be named appropriately (as per [convention](https://conventionalbranch.org/)).
 - Python is not my language of choice, so there may very well be some syntax issues within the codebase. You are more than welcome to make PRs to address this and correct syntax errors, as per the 2 above rules.
 - Whilst the TODO list on the README is generally the direction I wish to see the plugin go, feel free to propose new features via an issue, as mentioned above.
 - **No LLM (AI) written / assisted code**! This is a hobby project, maintained for the purposes of learning and enjoyment of its contributors. As such, all contributions must be written by humans. This helps keep my time spent reviewing code manageable, and ensures all authors fully understand (and take responsibility) for their changes.
