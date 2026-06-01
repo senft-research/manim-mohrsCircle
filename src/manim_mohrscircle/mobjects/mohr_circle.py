@@ -1,35 +1,11 @@
-from typing import Iterable
-
 import numpy as np
-from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, Line, WHITE, RIGHT, VMobject
-from manim.utils.color.DVIPSNAMES import CYAN
+from manim import BLUE, Dot, VGroup, Circle, Line, WHITE
+from manim_mohrscircle.mobjects.mohr_circle_point import MohrCirclePoint
 
-## TODO Need to do code cleanup (maybe separate classes for different functionality?) and add nice animations (such
-#       as a protractor line for circle creation)
-class Points:
-    def __init__(self, p1, p2):
-        self.point_1 = p1
-        self.point_2 = p2
-        self.center_point = (p1 + p2) / 2
-## TODO still not perfect, would like to make the font size potentialy dynamic? Also give user some options? Need to look
-##      into kwargs a bit more
-class MohrCirclePoint(VGroup):
-    def __init__(self, stress_x, stress_y, axes, label_kwargs = None, *vmobjects: VMobject | Iterable[VMobject], **kwargs):
-        super().__init__(*vmobjects, **kwargs)
-        dot = Dot(point=axes.c2p([stress_x, stress_y]), color=CYAN)
-        label_kwargs = label_kwargs or {}
-        label = MathTex(f"({stress_x}, {stress_y})", **label_kwargs).next_to(dot, RIGHT)
-        self.point_center = dot.get_center()
-        self.add(dot)
-        self.add(label)
+from manim_mohrscircle.mobjects.points import Points
 
 
-
-def init_points(stress_x, stress_y, stress_shear):
-    p1 = np.array([stress_x, -stress_shear, 0])
-    p2 = np.array([stress_y, stress_shear, 0])
-    return Points(p1, p2)
-
+## TODO Need to add nice animations (such as a protractor line for circle creation)
 
 class MohrCircle(VGroup):
     def __init__(self, stress_x, stress_y, stress_shear, axes, point_label_kwargs = None, **kwargs):
@@ -46,7 +22,7 @@ class MohrCircle(VGroup):
         self.stress_x = stress_x
         self.stress_y = stress_y
         self.stress_shear = stress_shear
-        self.circle_points = init_points(
+        self.circle_points = _init_points(
             self.stress_x,
             self.stress_y,
             self.stress_shear
@@ -54,7 +30,6 @@ class MohrCircle(VGroup):
         self._init_key_geometry()
         self._find_principle_stresses()
         self._find_shear_stress_boundaries()
-
 
     def _create_objects(self):
         self._create_initial_dots()
@@ -64,16 +39,24 @@ class MohrCircle(VGroup):
     def _create_initial_dots(self):
         self.point_1_dot = MohrCirclePoint(self.circle_points.point_1[0], self.circle_points.point_1[1], self.axes, self.point_label_kwargs)
         self.point_2_dot = MohrCirclePoint(self.circle_points.point_2[0], self.circle_points.point_2[1], self.axes, self.point_label_kwargs)
-        self.center_point_dot = Dot(point=self.axes.c2p(self.circle_points.center_point), color=RED)
-        self.min_stress_dot = Dot(point=self.axes.c2p(np.array([self.min_stress_x, 0, 0])), color=CYAN)
-        self.max_stress_dot = Dot(point=self.axes.c2p(np.array([self.max_stress_x, 0, 0])), color=CYAN)
-        self.min_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.min_shear_y, 0])), color=CYAN)
-        self.max_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.max_shear_y, 0])), color=CYAN)
+        #self.center_point_dot = Dot(point=self.axes.c2p(self.circle_points.center_point), color=RED)
+        self.center_point_dot = MohrCirclePoint(self.circle_points.center_point[0], self.circle_points.center_point[1], self.axes, self.point_label_kwargs)
 
+        #self.min_stress_dot = Dot(point=self.axes.c2p(np.array([self.min_stress_x, 0, 0])), color=CYAN)
+        self.min_stress_dot = MohrCirclePoint(self.min_stress_x, 0, self.axes, self.point_label_kwargs)
+
+        #self.max_stress_dot = Dot(point=self.axes.c2p(np.array([self.max_stress_x, 0, 0])), color=CYAN)
+        self.max_stress_dot = MohrCirclePoint(self.max_stress_x, 0, self.axes, self.point_label_kwargs)
+
+        #self.min_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.min_shear_y, 0])), color=CYAN)
+        self.min_shear_dot = MohrCirclePoint(self.center_point[0], self.min_shear_y, self.axes, self.point_label_kwargs)
+
+        #self.max_shear_dot = Dot(point=self.axes.c2p(np.array([self.center_point[0], self.max_shear_y, 0])), color=CYAN)
+        self.max_shear_dot = MohrCirclePoint(self.center_point[0], self.max_shear_y, self.axes, self.point_label_kwargs)
 
     def _create_circle(self):
         self.circle = Circle(radius=(float(self.scene_circle_radius)))
-        self.circle.move_to(self.center_point_dot.get_center())
+        self.circle.move_to(self.center_point_dot.point_center)
         self._rotate_circle()
 
     def _add_mobjects(self):
@@ -128,6 +111,8 @@ class MohrCircle(VGroup):
         self.min_shear_y = center_y - self.circle_radius
         self.max_shear_y = center_y + self.circle_radius
 
+    ## TODO Keeping these as the Dots (for now). But need to restructure the MohrsCirclePoint class to accept Dots in a
+    ##      way that prevents the axes logic from occurring.
     def find_stress_point_at_element_rotation_rads(self, rot_angle_rads):
         stress_point = self.circle.point_at_angle(rot_angle_rads*2)
         return Dot(point=stress_point, color=WHITE)
@@ -135,3 +120,8 @@ class MohrCircle(VGroup):
     def find_stress_point_at_element_rotation_degrees(self, rot_angle_degrees):
 
         return self.find_stress_point_at_element_rotation_rads(rot_angle_degrees*(np.pi/180))
+
+def _init_points(stress_x, stress_y, stress_shear):
+    p1 = np.array([stress_x, -stress_shear, 0])
+    p2 = np.array([stress_y, stress_shear, 0])
+    return Points(p1, p2)
