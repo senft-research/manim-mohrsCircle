@@ -4,8 +4,8 @@ import numpy as np
 from manim import BLUE, Dot, RED, VGroup, Circle, MathTex, Line, WHITE, RIGHT, VMobject
 from manim.utils.color.DVIPSNAMES import CYAN
 
-## TODO Need to add better label formatting, code cleanup (maybe separate classes for different functionality?) and add
-##      nice animations (such as a protractor line for circle creation)
+## TODO Need to do code cleanup (maybe separate classes for different functionality?) and add nice animations (such
+#       as a protractor line for circle creation)
 class Points:
     def __init__(self, p1, p2):
         self.point_1 = p1
