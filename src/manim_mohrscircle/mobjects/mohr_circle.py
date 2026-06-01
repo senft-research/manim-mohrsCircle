@@ -14,10 +14,11 @@ class Points:
 ## TODO still not perfect, would like to make the font size potentialy dynamic? Also give user some options? Need to look
 ##      into kwargs a bit more
 class MohrCirclePoint(VGroup):
-    def __init__(self, stress_x, stress_y, axes, *vmobjects: VMobject | Iterable[VMobject], **kwargs):
+    def __init__(self, stress_x, stress_y, axes, label_kwargs = None, *vmobjects: VMobject | Iterable[VMobject], **kwargs):
         super().__init__(*vmobjects, **kwargs)
         dot = Dot(point=axes.c2p([stress_x, stress_y]), color=CYAN)
-        label = MathTex(f"({stress_x}, {stress_y})", font_size= 30).next_to(dot, RIGHT)
+        label_kwargs = label_kwargs or {}
+        label = MathTex(f"({stress_x}, {stress_y})", **label_kwargs).next_to(dot, RIGHT)
         self.point_center = dot.get_center()
         self.add(dot)
         self.add(label)
@@ -31,8 +32,10 @@ def init_points(stress_x, stress_y, stress_shear):
 
 
 class MohrCircle(VGroup):
-    def __init__(self, stress_x, stress_y, stress_shear, axes, **kwargs):
+    def __init__(self, stress_x, stress_y, stress_shear, axes, point_label_kwargs = None, **kwargs):
         super().__init__(**kwargs)
+        self.point_label_kwargs = point_label_kwargs or {}
+
         self.axes = axes
         self._init_raw_data(stress_x, stress_y, stress_shear)
         self._create_objects()
@@ -59,8 +62,8 @@ class MohrCircle(VGroup):
         self._create_circle()
 
     def _create_initial_dots(self):
-        self.point_1_dot = MohrCirclePoint(self.circle_points.point_1[0], self.circle_points.point_1[1], self.axes)
-        self.point_2_dot = MohrCirclePoint(self.circle_points.point_2[0], self.circle_points.point_2[1], self.axes)
+        self.point_1_dot = MohrCirclePoint(self.circle_points.point_1[0], self.circle_points.point_1[1], self.axes, self.point_label_kwargs)
+        self.point_2_dot = MohrCirclePoint(self.circle_points.point_2[0], self.circle_points.point_2[1], self.axes, self.point_label_kwargs)
         self.center_point_dot = Dot(point=self.axes.c2p(self.circle_points.center_point), color=RED)
         self.min_stress_dot = Dot(point=self.axes.c2p(np.array([self.min_stress_x, 0, 0])), color=CYAN)
         self.max_stress_dot = Dot(point=self.axes.c2p(np.array([self.max_stress_x, 0, 0])), color=CYAN)
