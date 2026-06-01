@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "manim-mohrsCircle"
 version = "0.1.5"
-description = "A plugin that allows for the animation of the method-based creation of Mohr's Circle diagrams."
+description = "A plugin that allows Mohr's Circle to be represented as a Manim Mobject"
 license = "MIT"
 authors = ["Jordan Senft"]
 readme = "README.md"
