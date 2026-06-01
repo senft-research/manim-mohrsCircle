@@ -4,6 +4,9 @@ from manim_mohrscircle.mobjects.mohr_circle_point import MohrCirclePoint
 
 from manim_mohrscircle.mobjects.points import Points
 
+__all__ = [
+    "MohrCircle",
+]
 
 ## TODO Need to add nice animations (such as a protractor line for circle creation)
 
