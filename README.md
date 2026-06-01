@@ -1,7 +1,7 @@
 # Mohr's Circle Manim Plugin
-A plugin that allows for the representation of Mohr's Circle (along with key properties of the circle) as a Manim Mobject.
+A plugin that allows for the representation of Mohr's Circle (along with key properties of the circle) as a [Manim](https://www.manim.community/) Mobject.
 
-## Why make this plugin?
+## Why did I make this plugin?
 The main reason for developing this plugin was a realisation that online tools for creating Mohr's circle generally focus
 on the final product, rather than the method to produce it. 
 
