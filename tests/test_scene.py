@@ -21,11 +21,15 @@ class TestScene(MovingCameraScene):
             FadeIn(mc.point_1_dot),
             FadeIn(mc.point_2_dot),
             FadeIn(mc.center_point_dot),
-            FadeIn(mc.label_1),
-            FadeIn(mc.label_2),
             lag_ratio=0.3
         )
         self.wait(2)
         self.play(Create(mc.line))
         self.play(Create(mc.circle), run_time=2)
         self.wait(1)
+        self.play(FadeIn(mc.max_stress_dot), run_time=2)
+        self.play(FadeIn(mc.min_stress_dot), run_time=2)
+        self.play(FadeIn(mc.max_shear_dot), run_time=2)
+        self.play(FadeIn(mc.min_shear_dot), run_time=2)
+        stress_point = mc.find_stress_point_at_element_rotation_degrees(45)
+        self.play(FadeIn(stress_point), run_time=2)
