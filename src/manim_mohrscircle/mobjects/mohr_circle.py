@@ -11,7 +11,8 @@ class Points:
         self.point_1 = p1
         self.point_2 = p2
         self.center_point = (p1 + p2) / 2
-
+## TODO still not perfect, would like to make the font size potentialy dynamic? Also give user some options? Need to look
+##      into kwargs a bit more
 class MohrCirclePoint(VGroup):
     def __init__(self, stress_x, stress_y, axes, *vmobjects: VMobject | Iterable[VMobject], **kwargs):
         super().__init__(*vmobjects, **kwargs)
